@@ -9,6 +9,7 @@ const path = require('path');
 const TOKEN = process.env.DISCORD_TOKEN;
 const CLIENT_ID = process.env.CLIENT_ID;
 const REWARD = 0.15; // $ par parrainage
+const LOG_CHANNEL_ID = '1558127756976586863'; // salon où poster les parrainages
 
 // --- DB ---
 const db = new Database(path.join(__dirname, 'parrainage.db'));
@@ -135,10 +136,7 @@ client.on('guildMemberAdd', async (member) => {
     const weekTotal = (weekCount * REWARD).toFixed(2);
 
     // Post in log channel
-    const config = stmts.getLogChannel.get(guild.id);
-    if (!config?.log_channel_id) return;
-
-    const logChannel = guild.channels.cache.get(config.log_channel_id);
+    const logChannel = guild.channels.cache.get(LOG_CHANNEL_ID);
     if (!logChannel) return;
 
     // Get inviter's role (highest non-@everyone)
